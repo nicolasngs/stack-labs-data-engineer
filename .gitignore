@@ -1,0 +1,23 @@
+# Terraform state files and backups
+*.tfstate
+*.tfstate.backup
+*.tfstate.*.backup
+
+# Terraform directories and lock files
+.terraform/
+.terraform.lock.hcl
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.so
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
