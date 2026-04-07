@@ -73,7 +73,7 @@ resource "google_project_iam_member" "sa_roles" {
 
 # create bucket for raw data
 resource "google_storage_bucket" "raw_data" {
-  name                        = "bkt-${local.project_id}-retail-raw"
+  name                        = "${local.project_id}-raw-data"
   location                    = local.region
   uniform_bucket_level_access = true
   force_destroy               = true

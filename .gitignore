@@ -12,7 +12,21 @@ __pycache__/
 *.py[cod]
 *.so
 
-# IDE and editor files
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python packages
+*.egg-info/
+dist/
+build/
+
+# Node modules and npm artifacts
+node_modules/
+npm-debug.log
+npm-debug.log.*
 .vscode/
 .idea/
 *.swp
@@ -21,3 +35,6 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# secrets
+.env

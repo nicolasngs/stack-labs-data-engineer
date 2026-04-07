@@ -1,0 +1,122 @@
+{
+  "customers": [
+    { "customer_id": "100-JD-2024", "emails": ["jean.dupont@email.com"], "phone_numbers": ["+33612345678"] },
+    { "customer_id": "101-ML-2024", "emails": ["m.leclerc@provider.net", "marie.l@work.com"], "phone_numbers": ["06.11.22.33.44"] },
+    { "customer_id": "102-PP-2024", "emails": ["pierre.petit@web.fr"], "phone_numbers": ["+33788990011", "0145678910"] },
+    { "customer_id": "103-AB-2024", "emails": ["alice.bernard@gmail.com"], "phone_numbers": ["0655443322"] },
+    { "customer_id": "104-TR-2024", "emails": ["thomas.roux@outlook.com"], "phone_numbers": ["+33600112233"] },
+    { "customer_id": "105-SG-2024", "emails": ["sophie.garcia@mail.com"], "phone_numbers": ["0712341234"] },
+    { "customer_id": "106-NB-2024", "emails": ["nicolas.blanc@pro.fr"], "phone_numbers": ["0699887766"] },
+    { "customer_id": "107-CL-2024", "emails": ["catherine.legrand@wanadoo.fr"], "phone_numbers": ["0122334455"] },
+    { "customer_id": "108-DM-2024", "emails": ["david.morel@gmail.com"], "phone_numbers": ["+33677889900"] },
+    { "customer_id": "109-EF-2024", "emails": ["emma.fontaine@yahoo.com"], "phone_numbers": ["0610203040"] }
+],
+
+    "products": [
+    { "product_sku": "1001-ELC-X", "description": "Smartphone High-Tech 128GB", "unit_amount": 699.99, "supplier": "TechCorp" },
+    { "product_sku": "1002-ELC-X", "description": "Casque Réduction de Bruit", "unit_amount": 249.50, "supplier": "AudioMasters" },
+    { "product_sku": "1103-OFF-Z", "description": "Chaise de Bureau Ergonomique", "unit_amount": 189.00, "supplier": "ComfortSeat" },
+    { "product_sku": "1204-KIT-A", "description": "Machine à Café Grains", "unit_amount": 450.00, "supplier": "BaristaPro" },
+    { "product_sku": "1305-HOM-B", "description": "Lampe Connectée RVB", "unit_amount": 45.99, "supplier": "BrightLife" },
+    { "product_sku": "1406-SPO-C", "description": "Tapis de Yoga Antidérapant", "unit_amount": 35.00, "supplier": "ZenFit" },
+    { "product_sku": "1507-TOY-D", "description": "Lego Star Wars Millennium Falcon", "unit_amount": 159.90, "supplier": "LegoGroup" },
+    { "product_sku": "1608-FAS-E", "description": "Montre Chronographe Cuir", "unit_amount": 120.00, "supplier": "TimePiece" },
+    { "product_sku": "1709-GDA-F", "description": "Tondeuse à Gazon Sans Fil", "unit_amount": 320.00, "supplier": "GreenGarden" },
+    { "product_sku": "1810-AUT-G", "description": "Compresseur d'air Portatif", "unit_amount": 55.00, "supplier": "AutoGear" }
+],
+
+  "sales": [
+    {
+      "id": 10001,
+      "datetime": "2024-07-18 13:23:28",
+      "total_amount": 949.49,
+      "customer_id": "100-JD-2024",
+      "items": [
+        { "product_sku": "1001-ELC-X", "quantity": 1, "amount": 699.99 },
+        { "product_sku": "1002-ELC-X", "quantity": 1, "amount": 249.50 }
+      ]
+    },
+    {
+      "id": 10002,
+      "datetime": "2024-07-18 14:05:10",
+      "total_amount": 189.00,
+      "customer_id": "102-PP-2024",
+      "items": [
+        { "product_sku": "1103-OFF-Z", "quantity": 1, "amount": 189.00 }
+      ]
+    },
+    {
+      "id": 10003,
+      "datetime": "2024-07-18 15:45:00",
+      "total_amount": 900.00,
+      "customer_id": "105-SG-2024",
+      "items": [
+        { "product_sku": "1204-KIT-A", "quantity": 2, "amount": 450.00 }
+      ]
+    },
+    {
+      "id": 10004,
+      "datetime": "2024-07-19 09:12:33",
+      "total_amount": 137.97,
+      "customer_id": "109-EF-2024",
+      "items": [
+        { "product_sku": "1305-HOM-B", "quantity": 3, "amount": 45.99 }
+      ]
+    },
+    {
+      "id": 10005,
+      "datetime": "2024-07-19 10:30:15",
+      "total_amount": 319.80,
+      "customer_id": "101-ML-2024",
+      "items": [
+        { "product_sku": "1507-TOY-D", "quantity": 2, "amount": 159.90 }
+      ]
+    },
+    {
+      "id": 10006,
+      "datetime": "2024-07-19 11:55:00",
+      "total_amount": 155.00,
+      "customer_id": "103-AB-2024",
+      "items": [
+        { "product_sku": "1406-SPO-C", "quantity": 1, "amount": 35.00 },
+        { "product_sku": "1608-FAS-E", "quantity": 1, "amount": 120.00 }
+      ]
+    },
+    {
+      "id": 10007,
+      "datetime": "2024-07-20 08:20:10",
+      "total_amount": 320.00,
+      "customer_id": "107-CL-2024",
+      "items": [
+        { "product_sku": "1709-GDA-F", "quantity": 1, "amount": 320.00 }
+      ]
+    },
+    {
+      "id": 10008,
+      "datetime": "2024-07-20 14:40:22",
+      "total_amount": 55.00,
+      "customer_id": "108-DM-2024",
+      "items": [
+        { "product_sku": "1810-AUT-G", "quantity": 1, "amount": 55.00 }
+      ]
+    },
+    {
+      "id": 10009,
+      "datetime": "2024-07-21 16:10:05",
+      "total_amount": 699.99,
+      "customer_id": "104-TR-2024",
+      "items": [
+        { "product_sku": "1001-ELC-X", "quantity": 1, "amount": 699.99 }
+      ]
+    },
+    {
+      "id": 10010,
+      "datetime": "2024-07-21 17:30:45",
+      "total_amount": 91.98,
+      "customer_id": "106-NB-2024",
+      "items": [
+        { "product_sku": "1305-HOM-B", "quantity": 2, "amount": 45.99 }
+      ]
+    }
+  ]
+}
