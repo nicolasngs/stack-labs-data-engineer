@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const expectedApiKey = process.env.API_KEY;
 
 module.exports = (req, res, next) => {
