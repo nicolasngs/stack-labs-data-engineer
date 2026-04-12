@@ -1,11 +1,17 @@
+API
+Lancement de l'API:
+npm install
+npx json-server@0.17.4 api.json --middlewares ./middleware.js --port 3000
+
+Generer une url accessible depuis l'exterieur: 
+ngrok http 3000 
+Copier cette url pour la mettre dans le fichier tf
+
+
 Execution du fichier terraform:
 cd terraform
+terraform apply --auto-approve
 
-
-
-Lancement de l'API:
-npm install dotenv
-npx json-server@0.17.4 api.json --middlewares ./middleware.js --port 3000
 
 Execution des script d'injection:
 uv venv

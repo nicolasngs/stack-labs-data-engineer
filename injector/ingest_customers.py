@@ -3,7 +3,7 @@ import sys
 import logging
 import requests
 import json
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from ingest_utils import validate_config, upload_to_gcs
 
 logging.basicConfig(
@@ -12,7 +12,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-load_dotenv()
+#load_dotenv()
 
 api_key = os.getenv("API_KEY")
 api_customers_url = os.getenv("API_CUSTOMERS_URL")
