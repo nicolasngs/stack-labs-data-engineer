@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+logs/
+target/
+.DS_Store
+*.tfstate
+*.tfstate.backup

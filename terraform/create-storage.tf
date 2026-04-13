@@ -241,19 +241,23 @@ resource "google_bigquery_table" "gold_sales_items" {
   depends_on = [google_bigquery_dataset.reporting]
 }
 
+
+# ============================================================================
+# EXTRACT: Cloud function to extract from API rest to bucket json files
+# ============================================================================
 # Archive du code source de la Cloud Function
-data "archive_file" "function_source" {
+data "archive_file" "extract" {
   type        = "zip"
-  source_dir  = "${path.module}/../injector"
-  output_path = "${path.module}/function_source.zip"
+  source_dir  = "${path.module}/../extract"
+  output_path = "${path.module}/extract.zip"
 }
 
 # Upload le ZIP au bucket existant
-resource "google_storage_bucket_object" "function_source_zip" {
-  name       = "function_source.zip"
+resource "google_storage_bucket_object" "extract_zip" {
+  name       = "extract.zip"
   bucket     = google_storage_bucket.raw_data.name
-  source     = data.archive_file.function_source.output_path
-  depends_on = [data.archive_file.function_source]
+  source     = data.archive_file.extract.output_path
+  depends_on = [data.archive_file.extract]
 }
 
 # Topic Pub/Sub pour déclencher l'ingestion
@@ -264,7 +268,7 @@ resource "google_pubsub_topic" "trigger_topic" {
 
 # Cloud Function 2e génération pour exécuter les ingesteurs
 resource "google_cloudfunctions2_function" "ingest_function" {
-  name        = "fn-retail-data-ingest"
+  name        = "fn-extract"
   location    = local.region
   description = "Exécute les ingesteurs (customers, products, sales)"
 
@@ -274,7 +278,7 @@ resource "google_cloudfunctions2_function" "ingest_function" {
     source {
       storage_source {
         bucket = google_storage_bucket.raw_data.name
-        object = google_storage_bucket_object.function_source_zip.name
+        object = google_storage_bucket_object.extract_zip.name
       }
     }
   }
@@ -298,7 +302,7 @@ resource "google_cloudfunctions2_function" "ingest_function" {
 
   depends_on = [
     google_project_service.enabled_apis,
-    google_storage_bucket_object.function_source_zip,
+    google_storage_bucket_object.extract_zip,
     google_pubsub_topic.trigger_topic
   ]
 }
@@ -334,22 +338,22 @@ resource "google_cloud_scheduler_job" "hourly_job" {
 }
 
 # ============================================================================
-# Cloud Function: JSON to BigQuery
+# LOAD: Cloud functions json to bigQuery
 # ============================================================================
 
 # Archive du code source de la Cloud Function
-data "archive_file" "json_to_bq_source" {
+data "archive_file" "load_source" {
   type        = "zip"
-  source_dir  = "${path.module}/../cf-json-to-bq"
-  output_path = "${path.module}/json_to_bq_source.zip"
+  source_dir  = "${path.module}/../load"
+  output_path = "${path.module}/load.zip"
 }
 
 # Upload le ZIP au bucket
-resource "google_storage_bucket_object" "json_to_bq_zip" {
-  name       = "json_to_bq_source.zip"
+resource "google_storage_bucket_object" "load_zip" {
+  name       = "load.zip"
   bucket     = google_storage_bucket.raw_data.name
-  source     = data.archive_file.json_to_bq_source.output_path
-  depends_on = [data.archive_file.json_to_bq_source]
+  source     = data.archive_file.load_source.output_path
+  depends_on = [data.archive_file.load_source]
 }
 
 # Topic Pub/Sub pour Cloud Storage
@@ -369,7 +373,7 @@ resource "google_pubsub_topic_iam_member" "gcs_pubsub_publisher" {
 resource "google_storage_notification" "gcs_to_pubsub" {
   bucket         = google_storage_bucket.raw_data.name
   payload_format = "JSON_API_V1"
-  topic          = google_pubsub_topic.gcs_events.name
+  topic          = "projects/${local.project_id}/topics/${google_pubsub_topic.gcs_events.name}"
   
   depends_on = [
     google_pubsub_topic.gcs_events,
@@ -378,8 +382,8 @@ resource "google_storage_notification" "gcs_to_pubsub" {
 }
 
 # Cloud Function
-resource "google_cloudfunctions2_function" "json_to_bq_function" {
-  name        = "fn-json-to-bigquery"
+resource "google_cloudfunctions2_function" "load_function" {
+  name        = "fn-load"
   location    = local.region
   description = "Convertit JSON en tables BigQuery"
 
@@ -389,7 +393,7 @@ resource "google_cloudfunctions2_function" "json_to_bq_function" {
     source {
       storage_source {
         bucket = google_storage_bucket.raw_data.name
-        object = google_storage_bucket_object.json_to_bq_zip.name
+        object = google_storage_bucket_object.load_zip.name
       }
     }
   }
@@ -408,7 +412,7 @@ resource "google_cloudfunctions2_function" "json_to_bq_function" {
 
   depends_on = [
     google_project_service.enabled_apis,
-    google_storage_bucket_object.json_to_bq_zip
+    google_storage_bucket_object.load_zip
   ]
 }
 
@@ -419,7 +423,7 @@ resource "google_pubsub_subscription" "gcs_to_function" {
   ack_deadline_seconds = 45
 
   push_config {
-    push_endpoint = google_cloudfunctions2_function.json_to_bq_function.service_config[0].uri
+    push_endpoint = google_cloudfunctions2_function.load_function.service_config[0].uri
     
     oidc_token {
       service_account_email = google_service_account.data_ingest_sa.email
@@ -427,14 +431,14 @@ resource "google_pubsub_subscription" "gcs_to_function" {
   }
 
   depends_on = [
-    google_cloudfunctions2_function.json_to_bq_function,
+    google_cloudfunctions2_function.load_function,
     google_pubsub_topic.gcs_events
   ]
 }
 
 # Permission pour Pub/Sub d'invoquer la Cloud Function
 resource "google_cloudfunctions2_function_iam_member" "pubsub_invoke" {
-  cloud_function = google_cloudfunctions2_function.json_to_bq_function.name
+  cloud_function = google_cloudfunctions2_function.load_function.name
   location       = local.region
   role           = "roles/cloudfunctions.invoker"
   member         = "serviceAccount:service-${data.google_project.self.number}@gcp-sa-pubsub.iam.gserviceaccount.com"

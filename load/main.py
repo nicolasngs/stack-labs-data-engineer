@@ -4,6 +4,7 @@ import os
 import logging
 from google.cloud import storage
 from google.cloud import bigquery
+from google.cloud import pubsub_v1
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -65,6 +66,12 @@ def json_to_bigquery(request):
         load_job.result()
         
         logger.info(f"✓ Table {table_id} mise à jour avec {load_job.output_rows} lignes")
+        
+        # Déclencher dbt via Pub/Sub
+        publisher = pubsub_v1.PublisherClient()
+        topic_path = publisher.topic_path(project_id, 'data-ingestion-complete')
+        publisher.publish(topic_path, b'Ingestion complete')
+        
         return ("OK", 200)
     
     except Exception as e:

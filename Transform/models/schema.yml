@@ -1,0 +1,87 @@
+version: 2
+
+sources:
+  - name: stg_retail
+    description: "Tables de staging depuis l'API (Silver layer)"
+    database: "{{ env_var('GCP_PROJECT_ID') }}"
+    schema: stg_retail
+    
+    tables:
+      - name: customers
+        description: "Table des clients"
+        columns:
+          - name: customer_id
+            description: "Identifiant unique du client"
+            tests:
+              - unique
+              - not_null
+          - name: emails
+            description: "Liste des emails du client"
+          - name: phone_numbers
+            description: "Liste des numéros de téléphone du client"
+          - name: ingestion_timestamp
+            description: "Timestamp d'ingestion"
+            tests:
+              - not_null
+
+      - name: products
+        description: "Table des produits"
+        columns:
+          - name: product_sku
+            description: "Identifiant unique du produit (SKU)"
+            tests:
+              - unique
+              - not_null
+          - name: description
+            description: "Description du produit"
+          - name: unit_amount
+            description: "Prix unitaire du produit"
+          - name: supplier
+            description: "Fournisseur du produit"
+          - name: ingestion_timestamp
+            description: "Timestamp d'ingestion"
+            tests:
+              - not_null
+
+      - name: sales
+        description: "Table des ventes avec items imbriqués"
+        columns:
+          - name: id
+            description: "Identifiant unique de la vente"
+            tests:
+              - unique
+              - not_null
+          - name: datetime
+            description: "Date et heure de la vente"
+          - name: total_amount
+            description: "Montant total de la vente"
+          - name: customer_id
+            description: "Référence au client"
+          - name: items
+            description: "Détail des produits vendus (RECORD REPEATED)"
+          - name: load_timestamp
+            description: "Timestamp de chargement"
+            tests:
+              - not_null
+
+models:
+  - name: sales_items
+    description: "Table de synthèse des articles vendus (Gold layer) - Clé primaire combinée avec sale_id et product_sku"
+    columns:
+      - name: ID
+        description: "Clé primaire de la table"
+        tests:
+          - not_null
+      - name: sales_datetime
+        description: "Date et heure de la vente"
+      - name: item_amount
+        description: "Montant total par produit et par vente"
+      - name: product_sku
+        description: "SKU du produit vendu (unique id)"
+      - name: item_quantity
+        description: "Nombre d'item vendu de ce produit"
+      - name: product_description
+        description: "Description du produit"
+      - name: discount_perc
+        description: "Pourcentage de discount entre le prix catalogue (table products) et le montant unitaire vendu"
+

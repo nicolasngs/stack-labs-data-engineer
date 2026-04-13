@@ -1,0 +1,12 @@
+stack_labs:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: "stack-labs-project"
+      dataset: stg_retail
+      threads: 4
+      timeout_seconds: 300
+      location: europe-west1
+      priority: interactive
