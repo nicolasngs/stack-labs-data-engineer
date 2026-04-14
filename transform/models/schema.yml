@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: stg_retail
     description: "Tables de staging depuis l'API (Silver layer)"
-    database: "{{ env_var('GCP_PROJECT_ID') }}"
+    database: "stack-labs-data-engineer"
     schema: stg_retail
     
     tables:

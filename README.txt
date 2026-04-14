@@ -1,4 +1,4 @@
-API
+## Pour configurer l'API rest
 cd api
 npm install
 npx json-server@0.17.4 api.json --middlewares ./middleware.js --port 3000
@@ -7,7 +7,7 @@ Generer une url accessible depuis l'exterieur:
 ngrok http 3000 
 Copier cette url pour la mettre dans le fichier tf
 
-
+## Execution de la pipeline ELT 
 TERRAFORM
 cd terraform
 terraform apply --auto-approve
@@ -18,13 +18,13 @@ Extract: Charge les données depuis l'API rest vers le bucket GCS (json)
 Load: Transfert les données du bucket GCS (json) vers des tables bigquery
 Transform: Effectue une transformation depuis ces tables bigquery vers une autre table BigQuery finale
 
-LOCAL
-EXTRACT
-cd extract
-uv venv
-uv pip install python-dotenv google-cloud-storage
-source .venv\Scripts\activate
+## LOCAL execution
 gcloud auth application-default login
+
+# EXTRACT
+cd extract
+uv init
+uv pip install python-dotenv google-cloud-storage
 
 créer un fichier .env 
 exemple de contenu:
@@ -42,8 +42,14 @@ GCP_BUCKET_NAME="stack-labs-data-engineer-raw-data"
 
 uv run python main.py
 
-LOAD
+#LOAD
 cd load
-uv venv
-uv pip install python-dotenv google-cloud-storage google-cloud-bigquery google-cloud-pubsub
+uv init
+uv add python-dotenv google-cloud-storage google-cloud-bigquery google-cloud-pubsub
 uv run python main.py
+
+# TRANSFORM
+cd transform
+uv init
+uv add dbt-bigquery
+uv run dbt run --profiles.dir .dbt

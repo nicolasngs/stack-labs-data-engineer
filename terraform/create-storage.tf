@@ -443,3 +443,9 @@ resource "google_cloudfunctions2_function_iam_member" "pubsub_invoke" {
   role           = "roles/cloudfunctions.invoker"
   member         = "serviceAccount:service-${data.google_project.self.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
+
+
+
+# ============================================================================
+# Transform: from BigQuery tables in staging to data warehouse, ready for analysis
+# ============================================================================

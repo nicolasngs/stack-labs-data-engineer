@@ -4,8 +4,8 @@ stack_labs:
     dev:
       type: bigquery
       method: oauth
-      project: "stack-labs-project"
-      dataset: stg_retail
+      project: "stack-labs-data-engineer"
+      dataset: dw_retail
       threads: 4
       timeout_seconds: 300
       location: europe-west1

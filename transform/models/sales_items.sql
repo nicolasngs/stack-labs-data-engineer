@@ -22,4 +22,4 @@ cross join unnest(s.items) as item
 left join {{ source('stg_retail', 'products') }} p
     on item.product_sku = p.product_sku
 where s.datetime is not null
-order by s.datetime desc, s.id
+--order by s.datetime desc, s.id

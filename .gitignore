@@ -7,10 +7,15 @@
 .terraform/
 .terraform.lock.hcl
 
+# uv
+uv.lock
+pyproject.toml
+
 # Python bytecode and cache
 __pycache__/
 *.py[cod]
 *.so
+.python-version
 
 # Python virtual environments
 .venv/
@@ -41,3 +46,15 @@ Thumbs.db
 
 # archive
 *.zip
+
+# dbt
+.user.yml
+graph_summary.json
+graph.gpickle
+manifest.json
+partial_parse.msgpack
+run_results.json
+semantic_manifest.json
+
+# logs
+*.log
