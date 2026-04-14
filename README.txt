@@ -1,4 +1,7 @@
+# Documentation Pipeline ELT
+
 ## Pour configurer l'API rest
+
 cd api
 npm install
 npx json-server@0.17.4 api.json --middlewares ./middleware.js --port 3000
@@ -8,6 +11,7 @@ ngrok http 3000
 Copier cette url pour la mettre dans le fichier tf
 
 ## Execution de la pipeline ELT 
+
 TERRAFORM
 cd terraform
 terraform apply --auto-approve
@@ -19,9 +23,11 @@ Load: Transfert les données du bucket GCS (json) vers des tables bigquery
 Transform: Effectue une transformation depuis ces tables bigquery vers une autre table BigQuery finale
 
 ## LOCAL execution
+
 gcloud auth application-default login
 
 # EXTRACT
+
 cd extract
 uv init
 uv pip install python-dotenv google-cloud-storage
@@ -42,13 +48,15 @@ GCP_BUCKET_NAME="stack-labs-data-engineer-raw-data"
 
 uv run python main.py
 
-#LOAD
+# LOAD
+
 cd load
 uv init
 uv add python-dotenv google-cloud-storage google-cloud-bigquery google-cloud-pubsub
 uv run python main.py
 
 # TRANSFORM
+
 cd transform
 uv init
 uv add dbt-bigquery
