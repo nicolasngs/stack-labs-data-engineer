@@ -102,7 +102,7 @@ graph TD
 | `datetime` | `DATE` | | Date et heure de la transaction. | 2024-07-18 13:23:28 |
 | `total_amount` | `FLOAT` | | Montant total de la transaction. | 949.49 |
 | `customer_id` | `STRING` | | Identifiant unique du client. | 100-JD-2024 |
-| `items` | `STRING[]` | | Liste des produits (SKU, quantité, montant). | [ [1001-ELC-X, 1, 699.99] , [1002-ELC-X, 1, 249.50] ] |
+| `items` | `ARRAY<STRUCT<product_sku STRING, quantity INTEGER, amount FLOAT>>` | | Liste des produits (SKU, quantité, montant). | [ [1001-ELC-X, 1, 699.99] , [1002-ELC-X, 1, 249.50] ] |
 
 ## DATA WAREHOUSE
 
@@ -115,8 +115,10 @@ graph TD
 | `item_amount` | `FLOAT` | | Montant total par produit et par vente | 249.5 |
 | `product_sku` | `STRING` | | SKU du produit vendu | 1001-ELC-X |
 | `item_quantity` | `INTEGER` | | Nombre d'items vendus de ce produit | 1 |
-| `item_quantity` | `STRING` | | Description du produit | Smartphone High-Tech 128GB |
-| `discount_perc` | `FLOAT` | | % de discount entre le prix catalogue (stg_products) et le montant unitaire vendu | 0.0|
+| `product_description` | `STRING` | | Description du produit | Smartphone High-Tech 128GB |
+| `discount_perc` | `FLOAT` | | % de discount entre le prix catalogue (stg_products) et le montant unitaire vendu | 0.0 
+
+
 
 ## Configuration de l'API
 ```bash
