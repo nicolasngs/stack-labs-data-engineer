@@ -74,7 +74,50 @@ graph TD
     style G fill:#34A853,color:#fff,stroke-width:4px
     style SEC fill:#EA4335,color:#fff
 ```
-    
+
+## STAGING
+
+### stg_products
+
+| Colonne | Type | Contraintes | Description | Exemple |
+| :--- | :--- | :--- | :--- | :--- |
+| `product_sku` | `STRING` | PRIMARY KEY | Identifiant unique du produit | 1001-ELC-X |
+| `description` | `STRING` | | Détails du produit | Smartphone High-Tech 128GB |
+| `unit_amount` | `FLOAT` | | Prix unitaire | 699.99 |
+| `supplier` | `STRING` | | Nom du fournisseur | TechCorp |
+
+### stg_customers
+
+| Colonne | Type | Contraintes | Description | Exemple |
+| :--- | :--- | :--- | :--- | :--- |
+| `customer_id` | `STRING` | PRIMARY KEY | Identifiant unique du client | 100-JD-2024" |
+| `emails` | `STRING[]` | | Emails du client | [m.leclerc@provider.net, marie.l@work.com] |
+| `phone_numbers` | `STRING[]` | | Numeros de téléphone du client | [+33788990011, 0145678910] |
+
+### stg_sales
+
+| Colonne | Type | Contraintes | Description | Exemple |
+| :--- | :--- | :--- | :--- | :--- |
+| `id` | `INTEGER` | PRIMARY KEY | Identifiant de la vente (auto-incrémenté). | 10001 |
+| `datetime` | `DATE` | | Date et heure de la transaction. | 2024-07-18 13:23:28 |
+| `total_amount` | `FLOAT` | | Montant total de la transaction. | 949.49 |
+| `customer_id` | `STRING` | | Identifiant unique du client. | 100-JD-2024 |
+| `items` | `STRING[]` | | Liste des produits (SKU, quantité, montant). | [ [1001-ELC-X, 1, 699.99] , [1002-ELC-X, 1, 249.50] ] |
+
+## DATA WAREHOUSE
+
+### dw_sales_items
+
+| Colonne | Type | Contraintes | Description | Exemple |
+| :--- | :--- | :--- | :--- | :--- |
+| `id` | `INTEGER` | PRIMARY KEY | Clé primaire de la table | 10001 |
+| `sales_datetime` | `DATE` | | Date de la vente | 2024-07-18 13:23:28  |
+| `item_amount` | `FLOAT` | | Montant total par produit et par vente | 249.5 |
+| `product_sku` | `STRING` | | SKU du produit vendu | 1001-ELC-X |
+| `item_quantity` | `INTEGER` | | Nombre d'items vendus de ce produit | 1 |
+| `item_quantity` | `STRING` | | Description du produit | Smartphone High-Tech 128GB |
+| `discount_perc` | `FLOAT` | | % de discount entre le prix catalogue (stg_products) et le montant unitaire vendu | 0.0|
+
 ## Configuration de l'API
 ```bash
 cd api
